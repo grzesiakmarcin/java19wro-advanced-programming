@@ -9,14 +9,12 @@ import java.util.stream.Stream;
 public class StringHashSet implements Set<String> {
 
     private List<List<String>> buckets;
-    public StringHashSet(){
-        buckets = new ArrayList<>();
 
-        for (int i=0; i<4;i++){
+    public StringHashSet() {
+        buckets = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
             buckets.add(new ArrayList<>());
         }
-
-
     }
 
     @Override
@@ -31,26 +29,19 @@ public class StringHashSet implements Set<String> {
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        int hash = o.hashCode();
+        int index = hash % this.buckets.size();
+        if (buckets.get(index).contains(o)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public Iterator<String> iterator() {
         return null;
     }
-
-    @Override
-    public void forEach(Consumer<? super String> action) {
-
-    }
-
-    @Override
-    public String toString(){
-        return this.buckets.stream()
-                .flatMap(bucket->bucket.stream())
-                .collect(Collectors.joining(","))+ "}";
-    }
-
 
     @Override
     public Object[] toArray() {
@@ -66,7 +57,7 @@ public class StringHashSet implements Set<String> {
     public boolean add(String s) {
         int hash = s.hashCode();
         int index = hash % this.buckets.size();
-        List<String> bucket = this.buckets.get(index);
+        this.buckets.get(index).add(s);
         return true;
     }
 
@@ -96,18 +87,21 @@ public class StringHashSet implements Set<String> {
     }
 
     @Override
-    public boolean removeIf(Predicate<? super String> filter) {
-        return false;
-    }
-
-    @Override
     public void clear() {
+        for (int i = 0; i < buckets.size(); i++) {
+            buckets.get(i).clear();
+        }
 
     }
 
     @Override
     public Spliterator<String> spliterator() {
         return null;
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super String> filter) {
+        return false;
     }
 
     @Override
@@ -118,5 +112,17 @@ public class StringHashSet implements Set<String> {
     @Override
     public Stream<String> parallelStream() {
         return null;
+    }
+
+    @Override
+    public void forEach(Consumer<? super String> action) {
+
+    }
+
+    @Override
+    public String toString() {
+        return "{" + this.buckets.stream()
+                .flatMap(bucket -> bucket.stream())
+                .collect(Collectors.joining(", ")) + "}";
     }
 }

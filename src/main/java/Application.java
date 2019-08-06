@@ -13,11 +13,17 @@ public class Application {
 
 
         Set<String> set = new StringHashSet();
+
+
         set.add("Ala");
         set.add("Alan");
         set.add("Jakub");
         set.add("Marek");
         System.out.println(set);
+
+
+
+        System.out.println(set.contains("Alax"));
 
         long start = System.currentTimeMillis();
         experimentWithArrayList(1000);
