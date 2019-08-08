@@ -1,4 +1,4 @@
-package hashset;
+package hashcollections;
 
 import org.junit.Test;
 
